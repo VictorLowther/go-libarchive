@@ -4,6 +4,7 @@ package archive
 //#include<archive_entry.h>
 import "C"
 
+// Constants returned by Entry.FileType()
 var (
 	FileTypeRegFile = C.AE_IFREG
 	FileTypeSymLink = C.AE_IFLNK

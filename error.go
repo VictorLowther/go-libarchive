@@ -7,6 +7,7 @@ import (
 	"io"
 )
 
+// Error types returned by the libarchive functions we use.
 const (
 	ARCHIVE_EOF   = C.ARCHIVE_EOF
 	ARCHIVE_OK    = C.ARCHIVE_OK
@@ -15,6 +16,7 @@ const (
 	ARCHIVE_FATAL = C.ARCHIVE_FATAL
 )
 
+// Error types we will return
 var (
 	ErrArchiveEOF   = io.EOF
 	ErrArchiveRetry = errors.New("libarchive: RETRY [operation failed but can be retried]")

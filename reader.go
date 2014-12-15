@@ -68,8 +68,8 @@ func myread(archive *C.struct_archive, client_data unsafe.Pointer, block unsafe.
 //
 // ErrArchiveEOF is returned when there
 // is no more to be read from the archive
-func (r *Reader) Next() (ArchiveEntry, error) {
-	e := new(entryImpl)
+func (r *Reader) Next() (*Entry, error) {
+	e := new(Entry)
 
 	err := codeToError(int(C.archive_read_next_header(r.archive, &e.entry)))
 
@@ -92,18 +92,9 @@ func (r *Reader) Read(b []byte) (n int, err error) {
 }
 
 // Free frees the resources the underlying libarchive archive is using
-// calling archive_read_free
-func (r *Reader) Free() error {
-	if C.archive_read_free(r.archive) == ARCHIVE_FATAL {
-		return ErrArchiveFatal
-	}
-	return nil
-}
-
-// Close closes the underlying libarchive archive
-// calling archive read_cloe
+// calling archive_read_free (which automatically calls archive_read_close
 func (r *Reader) Close() error {
-	if C.archive_read_close(r.archive) == ARCHIVE_FATAL {
+	if C.archive_read_free(r.archive) == ARCHIVE_FATAL {
 		return ErrArchiveFatal
 	}
 	return nil

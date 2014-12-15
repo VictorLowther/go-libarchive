@@ -1,11 +1,10 @@
 package main
 
 import (
-	"bytes"
 	"fmt"
 	"os"
 
-	ar "github.com/MStoykov/go-libarchive"
+	ar "github.com/VictorLowther/go-libarchive"
 )
 
 func printContents(filename string) {
@@ -19,7 +18,6 @@ func printContents(filename string) {
 	if err != nil {
 		fmt.Printf("Error on NewReader\n %s\n", err)
 	}
-	defer reader.Free()
 	defer reader.Close()
 	for {
 		entry, err := reader.Next()
@@ -27,16 +25,7 @@ func printContents(filename string) {
 			fmt.Printf("Error on reader.Next():\n%s\n", err)
 			return
 		}
-		fmt.Printf("Name %s\n", entry.PathName())
-		var buf bytes.Buffer
-		size, err := buf.ReadFrom(reader)
-
-		if err != nil {
-			fmt.Printf("Error on reading entry from archive:\n%s\n", err)
-		}
-		if size > 0 {
-			fmt.Println("Contents:\n***************", buf.String(), "*********************")
-		}
+		fmt.Printf("Name %s, Size %d\n", entry.PathName(),entry.Size())
 	}
 }
 
